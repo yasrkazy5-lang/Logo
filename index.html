@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,25 +17,26 @@
     align-items: center;
     justify-content: center;
     padding: 24px;
+    direction: rtl;
   }
 
   h1 {
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 700;
     color: #60a5fa;
     letter-spacing: 3px;
     text-transform: uppercase;
-    margin-bottom: 28px;
-    font-family: 'Segoe UI', sans-serif;
+    margin-bottom: 24px;
+    direction: ltr;
   }
 
   .builder {
     background: #111120;
     border: 1px solid #1e3a5f;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     width: 100%;
-    max-width: 420px;
+    max-width: 400px;
     box-shadow: 0 0 30px rgba(59,130,246,0.08);
   }
 
@@ -43,102 +44,91 @@
   .upload-zone {
     border: 2px dashed #1e3a5f;
     border-radius: 12px;
-    padding: 28px 16px;
+    height: 120px;
     text-align: center;
     cursor: pointer;
     transition: all 0.2s;
-    margin-bottom: 18px;
+    margin-bottom: 16px;
     position: relative;
     background: #0d0d1a;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
   .upload-zone:hover { border-color: #3b82f6; background: #0f1525; }
-  .upload-zone.has-image {
-    border-style: solid;
-    border-color: #3b82f6;
-    padding: 12px;
-  }
+  .upload-zone.has-image { border-style: solid; border-color: #3b82f6; }
+
   .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0;
+    cursor: pointer; width: 100%; height: 100%; z-index: 2;
+  }
+
+  /* الصورة تملأ الـ zone كلها */
+  #zone-preview-img {
     position: absolute;
     inset: 0;
-    opacity: 0;
-    cursor: pointer;
     width: 100%;
     height: 100%;
-    z-index: 2;
-  }
-  .upload-zone .upload-icon { font-size: 32px; margin-bottom: 8px; display: block; }
-  .upload-zone .upload-text { font-size: 13px; color: #4b6a8f; }
-  .upload-zone.has-image .upload-icon { display: none; }
-  .upload-zone.has-image .upload-text { font-size: 11px; color: #3b82f6; margin-top: 6px; }
-  #zone-preview-img {
-    width: 80px;
-    height: 80px;
-    border-radius: 10px;
     object-fit: cover;
     display: none;
-    margin: 0 auto;
+    z-index: 1;
   }
   .upload-zone.has-image #zone-preview-img { display: block; }
 
+  /* نص وأيقونة فوق الصورة */
+  .upload-zone .upload-icon { font-size: 28px; z-index: 3; }
+  .upload-zone .upload-text { font-size: 13px; color: #4b6a8f; z-index: 3; }
+  .upload-zone.has-image .upload-overlay {
+    position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 3; opacity: 0; transition: opacity 0.2s;
+  }
+  .upload-zone.has-image:hover .upload-overlay { opacity: 1; }
+  .upload-overlay {
+    position: absolute; inset: 0;
+    display: none;
+  }
+  .upload-overlay span { font-size: 12px; color: #fff; }
+
   /* Fields */
-  .field { margin-bottom: 14px; }
-  .field label {
-    display: block;
-    font-size: 11px;
-    color: #4b6a8f;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; color: #4b6a8f; letter-spacing: 1px; margin-bottom: 5px; }
   .field input {
-    width: 100%;
-    background: #0d0d1a;
-    border: 1px solid #1e3a5f;
-    border-radius: 8px;
-    padding: 10px 14px;
-    font-size: 14px;
-    color: #fff;
-    outline: none;
-    transition: border-color 0.2s;
-    font-family: inherit;
-    direction: ltr;
+    width: 100%; background: #0d0d1a; border: 1px solid #1e3a5f;
+    border-radius: 8px; padding: 9px 12px; font-size: 14px; color: #fff;
+    outline: none; transition: border-color 0.2s; font-family: inherit; direction: ltr;
   }
-  .field input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
-  }
+  .field input:focus { border-color: #3b82f6; box-shadow: 0 0 0 2px rgba(59,130,246,0.12); }
   .field input::placeholder { color: #2a3f5f; }
 
   /* Preview */
-  .preview-label {
-    font-size: 11px;
-    color: #4b6a8f;
-    letter-spacing: 1px;
-    margin-bottom: 10px;
-    margin-top: 4px;
-  }
+  .preview-label { font-size: 11px; color: #4b6a8f; letter-spacing: 1px; margin-bottom: 8px; margin-top: 4px; }
 
   #card-preview {
     background: #111118;
     border: 1px solid #1e3a5f;
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex;
-    flex-direction: row !important;
+    flex-direction: row;
     align-items: center;
-    gap: 14px;
-    padding: 12px 16px;
-    margin-bottom: 18px;
-    box-shadow: 0 0 16px rgba(59,130,246,0.1);
-    direction: ltr !important;
+    gap: 12px;
+    padding: 10px 12px;
+    margin-bottom: 16px;
+    direction: ltr;
+    overflow: hidden;
+    width: 100%;
   }
 
   .preview-icon {
     flex-shrink: 0;
-    width: 64px;
-    height: 64px;
-    border-radius: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
     border: 2px solid #3b82f6;
-    box-shadow: 0 0 12px rgba(59,130,246,0.45);
+    box-shadow: 0 0 10px rgba(59,130,246,0.5);
     overflow: hidden;
     background: #0d1525;
     display: flex;
@@ -146,38 +136,23 @@
     justify-content: center;
   }
   .preview-icon img { width: 100%; height: 100%; object-fit: cover; display: none; }
-  .preview-icon .ph { font-size: 24px; opacity: 0.3; }
+  .preview-icon .ph { font-size: 20px; opacity: 0.3; }
 
-  .preview-info { display: flex; flex-direction: column; gap: 3px; }
-  .preview-name { font-size: 16px; font-weight: 700; color: #fff; }
+  .preview-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+  .preview-name { font-size: 14px; font-weight: 700; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .preview-name.ph-text { color: #2a3f5f; }
-  .preview-version { font-size: 12px; color: #60a5fa; font-weight: 500; }
+  .preview-version { font-size: 11px; color: #60a5fa; font-weight: 500; }
   .preview-version.ph-text { color: #1e3a5f; }
-  .preview-author { font-size: 11px; color: #6b7280; margin-top: 1px; }
+  .preview-author { font-size: 10px; color: #6b7280; }
 
   /* Button */
   #download-btn {
-    width: 100%;
-    background: #1d4ed8;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 12px;
-    font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s;
-    font-family: inherit;
+    width: 100%; background: #1d4ed8; color: #fff; border: none;
+    border-radius: 10px; padding: 11px; font-size: 14px; font-weight: 600;
+    cursor: pointer; transition: background 0.2s, box-shadow 0.2s; font-family: inherit;
   }
-  #download-btn:hover:not(:disabled) {
-    background: #2563eb;
-    box-shadow: 0 0 16px rgba(59,130,246,0.35);
-  }
-  #download-btn:disabled {
-    background: #1e2a3f;
-    color: #2a3f5f;
-    cursor: not-allowed;
-  }
+  #download-btn:hover:not(:disabled) { background: #2563eb; box-shadow: 0 0 16px rgba(59,130,246,0.35); }
+  #download-btn:disabled { background: #1e2a3f; color: #2a3f5f; cursor: not-allowed; }
 
   canvas { display: none; }
 </style>
@@ -190,8 +165,9 @@
 
   <div class="upload-zone" id="upload-zone">
     <input type="file" id="img-input" accept="image/*">
-    <span class="upload-icon">🖼️</span>
     <img id="zone-preview-img" src="" alt="">
+    <div class="upload-overlay"><span>تغيير الصورة</span></div>
+    <span class="upload-icon">🖼️</span>
     <div class="upload-text">اضغط لرفع صورة المود</div>
   </div>
 
@@ -224,27 +200,27 @@
 <canvas id="canvas"></canvas>
 
 <script>
-  const imgInput       = document.getElementById('img-input');
-  const uploadZone     = document.getElementById('upload-zone');
-  const zoneImg        = document.getElementById('zone-preview-img');
-  const previewImg     = document.getElementById('preview-img');
-  const previewPh      = document.querySelector('.preview-icon .ph');
-  const previewName    = document.getElementById('preview-name');
-  const previewVersion = document.getElementById('preview-version');
-  const modNameInput   = document.getElementById('mod-name');
-  const modVersionInput= document.getElementById('mod-version');
-  const downloadBtn    = document.getElementById('download-btn');
-  const canvas         = document.getElementById('canvas');
-  const ctx            = canvas.getContext('2d');
+  const imgInput        = document.getElementById('img-input');
+  const uploadZone      = document.getElementById('upload-zone');
+  const zoneImg         = document.getElementById('zone-preview-img');
+  const uploadIcon      = uploadZone.querySelector('.upload-icon');
+  const uploadText      = uploadZone.querySelector('.upload-text');
+  const previewImg      = document.getElementById('preview-img');
+  const previewPh       = document.querySelector('.preview-icon .ph');
+  const previewName     = document.getElementById('preview-name');
+  const previewVersion  = document.getElementById('preview-version');
+  const modNameInput    = document.getElementById('mod-name');
+  const modVersionInput = document.getElementById('mod-version');
+  const downloadBtn     = document.getElementById('download-btn');
+  const canvas          = document.getElementById('canvas');
+  const ctx             = canvas.getContext('2d');
 
   let loadedImage = null;
 
   function checkReady() {
-    const ok = loadedImage && modNameInput.value.trim() && modVersionInput.value.trim();
-    downloadBtn.disabled = !ok;
+    downloadBtn.disabled = !(loadedImage && modNameInput.value.trim() && modVersionInput.value.trim());
   }
 
-  // Image upload
   imgInput.addEventListener('change', (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -253,11 +229,12 @@
       const img = new Image();
       img.onload = () => {
         loadedImage = img;
-        // zone preview
+        // zone: الصورة تملأ الكل
         zoneImg.src = ev.target.result;
         uploadZone.classList.add('has-image');
-        uploadZone.querySelector('.upload-text').textContent = 'اضغط لتغيير الصورة';
-        // card preview
+        uploadIcon.style.display = 'none';
+        uploadText.style.display = 'none';
+        // preview card
         previewImg.src = ev.target.result;
         previewImg.style.display = 'block';
         previewPh.style.display = 'none';
@@ -268,72 +245,48 @@
     reader.readAsDataURL(file);
   });
 
-  // Live name update
   modNameInput.addEventListener('input', () => {
     const val = modNameInput.value.trim();
-    if (val) {
-      previewName.textContent = val;
-      previewName.classList.remove('ph-text');
-    } else {
-      previewName.textContent = 'اسم المود';
-      previewName.classList.add('ph-text');
-    }
+    previewName.textContent = val || 'اسم المود';
+    previewName.classList.toggle('ph-text', !val);
     checkReady();
   });
 
-  // Live version update
   modVersionInput.addEventListener('input', () => {
     const val = modVersionInput.value.trim();
-    if (val) {
-      previewVersion.textContent = val;
-      previewVersion.classList.remove('ph-text');
-    } else {
-      previewVersion.textContent = 'v0.0';
-      previewVersion.classList.add('ph-text');
-    }
+    previewVersion.textContent = val || 'v0.0';
+    previewVersion.classList.toggle('ph-text', !val);
     checkReady();
   });
 
-  // Download
   downloadBtn.addEventListener('click', () => {
     const W = 760, H = 160;
-    canvas.width = W;
-    canvas.height = H;
+    canvas.width = W; canvas.height = H;
 
-    // BG
     ctx.fillStyle = '#111118';
-    roundRect(ctx, 0, 0, W, H, 18);
-    ctx.fill();
+    rr(ctx, 0, 0, W, H, 18); ctx.fill();
 
-    // Border
-    ctx.strokeStyle = '#1e3a5f';
-    ctx.lineWidth = 2;
-    roundRect(ctx, 1, 1, W-2, H-2, 17);
-    ctx.stroke();
+    ctx.strokeStyle = '#1e3a5f'; ctx.lineWidth = 2;
+    rr(ctx, 1, 1, W-2, H-2, 17); ctx.stroke();
 
-    // Icon glow + clip
     const ix = 24, iy = 24, is = 112, ir = 14;
+
     ctx.save();
-    ctx.shadowColor = 'rgba(59,130,246,0.6)';
-    ctx.shadowBlur = 20;
-    ctx.strokeStyle = '#3b82f6';
-    ctx.lineWidth = 2.5;
-    roundRect(ctx, ix, iy, is, is, ir);
-    ctx.stroke();
+    ctx.shadowColor = 'rgba(59,130,246,0.6)'; ctx.shadowBlur = 20;
+    ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 2.5;
+    rr(ctx, ix, iy, is, is, ir); ctx.stroke();
     ctx.restore();
 
     ctx.save();
-    roundRect(ctx, ix, iy, is, is, ir);
-    ctx.clip();
+    rr(ctx, ix, iy, is, is, ir); ctx.clip();
     ctx.drawImage(loadedImage, ix, iy, is, is);
     ctx.restore();
 
-    // Text (LTR side)
     const tx = ix + is + 22;
+    ctx.textAlign = 'left';
 
     ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 28px Segoe UI, sans-serif';
-    ctx.textAlign = 'left';
     ctx.fillText(modNameInput.value.trim(), tx, 62);
 
     ctx.fillStyle = '#60a5fa';
@@ -350,17 +303,12 @@
     link.click();
   });
 
-  function roundRect(c, x, y, w, h, r) {
+  function rr(c, x, y, w, h, r) {
     c.beginPath();
-    c.moveTo(x+r, y);
-    c.lineTo(x+w-r, y);
-    c.quadraticCurveTo(x+w, y, x+w, y+r);
-    c.lineTo(x+w, y+h-r);
-    c.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-    c.lineTo(x+r, y+h);
-    c.quadraticCurveTo(x, y+h, x, y+h-r);
-    c.lineTo(x, y+r);
-    c.quadraticCurveTo(x, y, x+r, y);
+    c.moveTo(x+r,y); c.lineTo(x+w-r,y); c.quadraticCurveTo(x+w,y,x+w,y+r);
+    c.lineTo(x+w,y+h-r); c.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    c.lineTo(x+r,y+h); c.quadraticCurveTo(x,y+h,x,y+h-r);
+    c.lineTo(x,y+r); c.quadraticCurveTo(x,y,x+r,y);
     c.closePath();
   }
 </script>
