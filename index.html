@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,12 +21,12 @@
 
   h1 {
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
     color: #60a5fa;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     margin-bottom: 28px;
-    opacity: 0.8;
+    font-family: 'Segoe UI', sans-serif;
   }
 
   .builder {
@@ -39,7 +39,7 @@
     box-shadow: 0 0 30px rgba(59,130,246,0.08);
   }
 
-  /* Image upload zone */
+  /* Upload zone */
   .upload-zone {
     border: 2px dashed #1e3a5f;
     border-radius: 12px;
@@ -50,15 +50,13 @@
     margin-bottom: 18px;
     position: relative;
     background: #0d0d1a;
+    overflow: hidden;
   }
-  .upload-zone:hover {
-    border-color: #3b82f6;
-    background: #0f1525;
-  }
+  .upload-zone:hover { border-color: #3b82f6; background: #0f1525; }
   .upload-zone.has-image {
     border-style: solid;
     border-color: #3b82f6;
-    padding: 10px;
+    padding: 12px;
   }
   .upload-zone input[type="file"] {
     position: absolute;
@@ -67,40 +65,29 @@
     cursor: pointer;
     width: 100%;
     height: 100%;
+    z-index: 2;
   }
-  .upload-zone img {
+  .upload-zone .upload-icon { font-size: 32px; margin-bottom: 8px; display: block; }
+  .upload-zone .upload-text { font-size: 13px; color: #4b6a8f; }
+  .upload-zone.has-image .upload-icon { display: none; }
+  .upload-zone.has-image .upload-text { font-size: 11px; color: #3b82f6; margin-top: 6px; }
+  #zone-preview-img {
     width: 80px;
     height: 80px;
     border-radius: 10px;
     object-fit: cover;
-    display: block;
+    display: none;
     margin: 0 auto;
   }
-  .upload-icon {
-    font-size: 32px;
-    margin-bottom: 8px;
-    display: block;
-  }
-  .upload-text {
-    font-size: 13px;
-    color: #4b6a8f;
-  }
-  .upload-zone.has-image .upload-text {
-    font-size: 11px;
-    color: #3b82f6;
-    margin-top: 6px;
-  }
+  .upload-zone.has-image #zone-preview-img { display: block; }
 
-  /* Inputs */
-  .field {
-    margin-bottom: 14px;
-  }
+  /* Fields */
+  .field { margin-bottom: 14px; }
   .field label {
     display: block;
     font-size: 11px;
     color: #4b6a8f;
     letter-spacing: 1px;
-    text-transform: uppercase;
     margin-bottom: 6px;
   }
   .field input {
@@ -114,21 +101,19 @@
     outline: none;
     transition: border-color 0.2s;
     font-family: inherit;
+    direction: ltr;
   }
   .field input:focus {
     border-color: #3b82f6;
     box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
   }
-  .field input::placeholder {
-    color: #2a3f5f;
-  }
+  .field input::placeholder { color: #2a3f5f; }
 
   /* Preview */
   .preview-label {
     font-size: 11px;
     color: #4b6a8f;
     letter-spacing: 1px;
-    text-transform: uppercase;
     margin-bottom: 10px;
     margin-top: 4px;
   }
@@ -138,12 +123,13 @@
     border: 1px solid #1e3a5f;
     border-radius: 12px;
     display: flex;
+    flex-direction: row !important;
     align-items: center;
     gap: 14px;
     padding: 12px 16px;
     margin-bottom: 18px;
-    box-shadow: 0 0 16px rgba(59,130,246,0.12);
-    min-height: 72px;
+    box-shadow: 0 0 16px rgba(59,130,246,0.1);
+    direction: ltr !important;
   }
 
   .preview-icon {
@@ -159,41 +145,17 @@
     align-items: center;
     justify-content: center;
   }
-  .preview-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: none;
-  }
-  .preview-icon .placeholder-icon {
-    font-size: 24px;
-    opacity: 0.3;
-  }
+  .preview-icon img { width: 100%; height: 100%; object-fit: cover; display: none; }
+  .preview-icon .ph { font-size: 24px; opacity: 0.3; }
 
-  .preview-info {
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .preview-name {
-    font-size: 16px;
-    font-weight: 700;
-    color: #ffffff;
-  }
-  .preview-name.empty { color: #2a3f5f; }
-  .preview-version {
-    font-size: 12px;
-    color: #60a5fa;
-    font-weight: 500;
-  }
-  .preview-version.empty { color: #1e3a5f; }
-  .preview-author {
-    font-size: 11px;
-    color: #6b7280;
-    margin-top: 1px;
-  }
+  .preview-info { display: flex; flex-direction: column; gap: 3px; }
+  .preview-name { font-size: 16px; font-weight: 700; color: #fff; }
+  .preview-name.ph-text { color: #2a3f5f; }
+  .preview-version { font-size: 12px; color: #60a5fa; font-weight: 500; }
+  .preview-version.ph-text { color: #1e3a5f; }
+  .preview-author { font-size: 11px; color: #6b7280; margin-top: 1px; }
 
-  /* Download button */
+  /* Button */
   #download-btn {
     width: 100%;
     background: #1d4ed8;
@@ -205,9 +167,9 @@
     font-weight: 600;
     cursor: pointer;
     transition: background 0.2s, box-shadow 0.2s;
-    letter-spacing: 0.3px;
+    font-family: inherit;
   }
-  #download-btn:hover {
+  #download-btn:hover:not(:disabled) {
     background: #2563eb;
     box-shadow: 0 0 16px rgba(59,130,246,0.35);
   }
@@ -215,7 +177,6 @@
     background: #1e2a3f;
     color: #2a3f5f;
     cursor: not-allowed;
-    box-shadow: none;
   }
 
   canvas { display: none; }
@@ -227,33 +188,32 @@
 
 <div class="builder">
 
-  <!-- Image Upload -->
   <div class="upload-zone" id="upload-zone">
     <input type="file" id="img-input" accept="image/*">
     <span class="upload-icon">🖼️</span>
+    <img id="zone-preview-img" src="" alt="">
     <div class="upload-text">اضغط لرفع صورة المود</div>
   </div>
 
-  <!-- Inputs -->
   <div class="field">
     <label>اسم المود</label>
-    <input type="text" id="mod-name" placeholder="Pickup &amp; Carry!" maxlength="40">
+    <input type="text" id="mod-name" placeholder="Pickup & Carry!" maxlength="40">
   </div>
+
   <div class="field">
     <label>الإصدار</label>
     <input type="text" id="mod-version" placeholder="v26.33" maxlength="20">
   </div>
 
-  <!-- Preview -->
   <div class="preview-label">معاينة</div>
   <div id="card-preview">
     <div class="preview-icon">
       <img id="preview-img" src="" alt="">
-      <span class="placeholder-icon">📦</span>
+      <span class="ph">📦</span>
     </div>
     <div class="preview-info">
-      <div class="preview-name empty" id="preview-name">اسم المود</div>
-      <div class="preview-version empty" id="preview-version">v0.0</div>
+      <div class="preview-name ph-text" id="preview-name">اسم المود</div>
+      <div class="preview-version ph-text" id="preview-version">v0.0</div>
       <div class="preview-author">Mohannd</div>
     </div>
   </div>
@@ -264,26 +224,24 @@
 <canvas id="canvas"></canvas>
 
 <script>
-  const imgInput = document.getElementById('img-input');
-  const uploadZone = document.getElementById('upload-zone');
-  const previewImg = document.getElementById('preview-img');
-  const placeholderIcon = uploadZone.querySelector('.placeholder-icon');
-  const uploadText = uploadZone.querySelector('.upload-text');
-  const previewName = document.getElementById('preview-name');
+  const imgInput       = document.getElementById('img-input');
+  const uploadZone     = document.getElementById('upload-zone');
+  const zoneImg        = document.getElementById('zone-preview-img');
+  const previewImg     = document.getElementById('preview-img');
+  const previewPh      = document.querySelector('.preview-icon .ph');
+  const previewName    = document.getElementById('preview-name');
   const previewVersion = document.getElementById('preview-version');
-  const modNameInput = document.getElementById('mod-name');
-  const modVersionInput = document.getElementById('mod-version');
-  const downloadBtn = document.getElementById('download-btn');
-  const canvas = document.getElementById('canvas');
-  const ctx = canvas.getContext('2d');
+  const modNameInput   = document.getElementById('mod-name');
+  const modVersionInput= document.getElementById('mod-version');
+  const downloadBtn    = document.getElementById('download-btn');
+  const canvas         = document.getElementById('canvas');
+  const ctx            = canvas.getContext('2d');
 
   let loadedImage = null;
 
   function checkReady() {
-    const hasImage = !!loadedImage;
-    const hasName = modNameInput.value.trim() !== '';
-    const hasVersion = modVersionInput.value.trim() !== '';
-    downloadBtn.disabled = !(hasImage && hasName && hasVersion);
+    const ok = loadedImage && modNameInput.value.trim() && modVersionInput.value.trim();
+    downloadBtn.disabled = !ok;
   }
 
   // Image upload
@@ -295,12 +253,14 @@
       const img = new Image();
       img.onload = () => {
         loadedImage = img;
+        // zone preview
+        zoneImg.src = ev.target.result;
+        uploadZone.classList.add('has-image');
+        uploadZone.querySelector('.upload-text').textContent = 'اضغط لتغيير الصورة';
+        // card preview
         previewImg.src = ev.target.result;
         previewImg.style.display = 'block';
-        placeholderIcon.style.display = 'none';
-        uploadZone.classList.add('has-image');
-        uploadZone.querySelector('.upload-icon').style.display = 'none';
-        uploadText.textContent = 'اضغط لتغيير الصورة';
+        previewPh.style.display = 'none';
         checkReady();
       };
       img.src = ev.target.result;
@@ -308,18 +268,29 @@
     reader.readAsDataURL(file);
   });
 
-  // Live preview
+  // Live name update
   modNameInput.addEventListener('input', () => {
     const val = modNameInput.value.trim();
-    previewName.textContent = val || 'اسم المود';
-    previewName.classList.toggle('empty', !val);
+    if (val) {
+      previewName.textContent = val;
+      previewName.classList.remove('ph-text');
+    } else {
+      previewName.textContent = 'اسم المود';
+      previewName.classList.add('ph-text');
+    }
     checkReady();
   });
 
+  // Live version update
   modVersionInput.addEventListener('input', () => {
     const val = modVersionInput.value.trim();
-    previewVersion.textContent = val || 'v0.0';
-    previewVersion.classList.toggle('empty', !val);
+    if (val) {
+      previewVersion.textContent = val;
+      previewVersion.classList.remove('ph-text');
+    } else {
+      previewVersion.textContent = 'v0.0';
+      previewVersion.classList.add('ph-text');
+    }
     checkReady();
   });
 
@@ -329,81 +300,68 @@
     canvas.width = W;
     canvas.height = H;
 
-    // Background
+    // BG
     ctx.fillStyle = '#111118';
     roundRect(ctx, 0, 0, W, H, 18);
     ctx.fill();
 
-    // Blue border
+    // Border
     ctx.strokeStyle = '#1e3a5f';
     ctx.lineWidth = 2;
-    roundRect(ctx, 1, 1, W - 2, H - 2, 17);
+    roundRect(ctx, 1, 1, W-2, H-2, 17);
     ctx.stroke();
 
-    // Blue glow card shadow
-    ctx.save();
-    ctx.shadowColor = 'rgba(59,130,246,0.25)';
-    ctx.shadowBlur = 30;
-    ctx.fillStyle = 'transparent';
-    roundRect(ctx, 0, 0, W, H, 18);
-    ctx.fill();
-    ctx.restore();
-
-    // Icon
-    const iconX = 24, iconY = 24, iconSize = 112, iconRadius = 14;
-
-    // Icon glow
+    // Icon glow + clip
+    const ix = 24, iy = 24, is = 112, ir = 14;
     ctx.save();
     ctx.shadowColor = 'rgba(59,130,246,0.6)';
     ctx.shadowBlur = 20;
     ctx.strokeStyle = '#3b82f6';
     ctx.lineWidth = 2.5;
-    roundRect(ctx, iconX, iconY, iconSize, iconSize, iconRadius);
+    roundRect(ctx, ix, iy, is, is, ir);
     ctx.stroke();
     ctx.restore();
 
-    // Icon image clipped
     ctx.save();
-    roundRect(ctx, iconX, iconY, iconSize, iconSize, iconRadius);
+    roundRect(ctx, ix, iy, is, is, ir);
     ctx.clip();
-    ctx.drawImage(loadedImage, iconX, iconY, iconSize, iconSize);
+    ctx.drawImage(loadedImage, ix, iy, is, is);
     ctx.restore();
 
-    // Text
-    const textX = iconX + iconSize + 22;
-    const nameY = 58;
+    // Text (LTR side)
+    const tx = ix + is + 22;
 
     ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 28px Segoe UI, system-ui, sans-serif';
-    ctx.fillText(modNameInput.value.trim(), textX, nameY);
+    ctx.font = 'bold 28px Segoe UI, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(modNameInput.value.trim(), tx, 62);
 
     ctx.fillStyle = '#60a5fa';
-    ctx.font = '500 18px Segoe UI, system-ui, sans-serif';
-    ctx.fillText(modVersionInput.value.trim(), textX, nameY + 34);
+    ctx.font = '500 18px Segoe UI, sans-serif';
+    ctx.fillText(modVersionInput.value.trim(), tx, 96);
 
     ctx.fillStyle = '#6b7280';
-    ctx.font = '16px Segoe UI, system-ui, sans-serif';
-    ctx.fillText('Mohannd', textX, nameY + 60);
+    ctx.font = '15px Segoe UI, sans-serif';
+    ctx.fillText('Mohannd', tx, 122);
 
-    // Download
     const link = document.createElement('a');
     link.download = 'mod-card.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
   });
 
-  function roundRect(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x + r, y);
-    ctx.lineTo(x + w - r, y);
-    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-    ctx.lineTo(x + w, y + h - r);
-    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-    ctx.lineTo(x + r, y + h);
-    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-    ctx.lineTo(x, y + r);
-    ctx.quadraticCurveTo(x, y, x + r, y);
-    ctx.closePath();
+  function roundRect(c, x, y, w, h, r) {
+    c.beginPath();
+    c.moveTo(x+r, y);
+    c.lineTo(x+w-r, y);
+    c.quadraticCurveTo(x+w, y, x+w, y+r);
+    c.lineTo(x+w, y+h-r);
+    c.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    c.lineTo(x+r, y+h);
+    c.quadraticCurveTo(x, y+h, x, y+h-r);
+    c.lineTo(x, y+r);
+    c.quadraticCurveTo(x, y, x+r, y);
+    c.closePath();
   }
 </script>
 </body>
