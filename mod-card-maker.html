@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mod Card Maker</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0a14;
+    min-height: 100vh;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+
+  h1 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #60a5fa;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+    opacity: 0.8;
+  }
+
+  .builder {
+    background: #111120;
+    border: 1px solid #1e3a5f;
+    border-radius: 16px;
+    padding: 24px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 0 30px rgba(59,130,246,0.08);
+  }
+
+  /* Image upload zone */
+  .upload-zone {
+    border: 2px dashed #1e3a5f;
+    border-radius: 12px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-bottom: 18px;
+    position: relative;
+    background: #0d0d1a;
+  }
+  .upload-zone:hover {
+    border-color: #3b82f6;
+    background: #0f1525;
+  }
+  .upload-zone.has-image {
+    border-style: solid;
+    border-color: #3b82f6;
+    padding: 10px;
+  }
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+  }
+  .upload-zone img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto;
+  }
+  .upload-icon {
+    font-size: 32px;
+    margin-bottom: 8px;
+    display: block;
+  }
+  .upload-text {
+    font-size: 13px;
+    color: #4b6a8f;
+  }
+  .upload-zone.has-image .upload-text {
+    font-size: 11px;
+    color: #3b82f6;
+    margin-top: 6px;
+  }
+
+  /* Inputs */
+  .field {
+    margin-bottom: 14px;
+  }
+  .field label {
+    display: block;
+    font-size: 11px;
+    color: #4b6a8f;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .field input {
+    width: 100%;
+    background: #0d0d1a;
+    border: 1px solid #1e3a5f;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: inherit;
+  }
+  .field input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 2px rgba(59,130,246,0.12);
+  }
+  .field input::placeholder {
+    color: #2a3f5f;
+  }
+
+  /* Preview */
+  .preview-label {
+    font-size: 11px;
+    color: #4b6a8f;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    margin-top: 4px;
+  }
+
+  #card-preview {
+    background: #111118;
+    border: 1px solid #1e3a5f;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    box-shadow: 0 0 16px rgba(59,130,246,0.12);
+    min-height: 72px;
+  }
+
+  .preview-icon {
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: 10px;
+    border: 2px solid #3b82f6;
+    box-shadow: 0 0 12px rgba(59,130,246,0.45);
+    overflow: hidden;
+    background: #0d1525;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .preview-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: none;
+  }
+  .preview-icon .placeholder-icon {
+    font-size: 24px;
+    opacity: 0.3;
+  }
+
+  .preview-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .preview-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+  }
+  .preview-name.empty { color: #2a3f5f; }
+  .preview-version {
+    font-size: 12px;
+    color: #60a5fa;
+    font-weight: 500;
+  }
+  .preview-version.empty { color: #1e3a5f; }
+  .preview-author {
+    font-size: 11px;
+    color: #6b7280;
+    margin-top: 1px;
+  }
+
+  /* Download button */
+  #download-btn {
+    width: 100%;
+    background: #1d4ed8;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.3px;
+  }
+  #download-btn:hover {
+    background: #2563eb;
+    box-shadow: 0 0 16px rgba(59,130,246,0.35);
+  }
+  #download-btn:disabled {
+    background: #1e2a3f;
+    color: #2a3f5f;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  canvas { display: none; }
+</style>
+</head>
+<body>
+
+<h1>Mod Card Maker</h1>
+
+<div class="builder">
+
+  <!-- Image Upload -->
+  <div class="upload-zone" id="upload-zone">
+    <input type="file" id="img-input" accept="image/*">
+    <span class="upload-icon">🖼️</span>
+    <div class="upload-text">اضغط لرفع صورة المود</div>
+  </div>
+
+  <!-- Inputs -->
+  <div class="field">
+    <label>اسم المود</label>
+    <input type="text" id="mod-name" placeholder="Pickup &amp; Carry!" maxlength="40">
+  </div>
+  <div class="field">
+    <label>الإصدار</label>
+    <input type="text" id="mod-version" placeholder="v26.33" maxlength="20">
+  </div>
+
+  <!-- Preview -->
+  <div class="preview-label">معاينة</div>
+  <div id="card-preview">
+    <div class="preview-icon">
+      <img id="preview-img" src="" alt="">
+      <span class="placeholder-icon">📦</span>
+    </div>
+    <div class="preview-info">
+      <div class="preview-name empty" id="preview-name">اسم المود</div>
+      <div class="preview-version empty" id="preview-version">v0.0</div>
+      <div class="preview-author">Mohannd</div>
+    </div>
+  </div>
+
+  <button id="download-btn" disabled>تحميل الكرت 📥</button>
+</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+  const imgInput = document.getElementById('img-input');
+  const uploadZone = document.getElementById('upload-zone');
+  const previewImg = document.getElementById('preview-img');
+  const placeholderIcon = uploadZone.querySelector('.placeholder-icon');
+  const uploadText = uploadZone.querySelector('.upload-text');
+  const previewName = document.getElementById('preview-name');
+  const previewVersion = document.getElementById('preview-version');
+  const modNameInput = document.getElementById('mod-name');
+  const modVersionInput = document.getElementById('mod-version');
+  const downloadBtn = document.getElementById('download-btn');
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+
+  let loadedImage = null;
+
+  function checkReady() {
+    const hasImage = !!loadedImage;
+    const hasName = modNameInput.value.trim() !== '';
+    const hasVersion = modVersionInput.value.trim() !== '';
+    downloadBtn.disabled = !(hasImage && hasName && hasVersion);
+  }
+
+  // Image upload
+  imgInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        loadedImage = img;
+        previewImg.src = ev.target.result;
+        previewImg.style.display = 'block';
+        placeholderIcon.style.display = 'none';
+        uploadZone.classList.add('has-image');
+        uploadZone.querySelector('.upload-icon').style.display = 'none';
+        uploadText.textContent = 'اضغط لتغيير الصورة';
+        checkReady();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Live preview
+  modNameInput.addEventListener('input', () => {
+    const val = modNameInput.value.trim();
+    previewName.textContent = val || 'اسم المود';
+    previewName.classList.toggle('empty', !val);
+    checkReady();
+  });
+
+  modVersionInput.addEventListener('input', () => {
+    const val = modVersionInput.value.trim();
+    previewVersion.textContent = val || 'v0.0';
+    previewVersion.classList.toggle('empty', !val);
+    checkReady();
+  });
+
+  // Download
+  downloadBtn.addEventListener('click', () => {
+    const W = 760, H = 160;
+    canvas.width = W;
+    canvas.height = H;
+
+    // Background
+    ctx.fillStyle = '#111118';
+    roundRect(ctx, 0, 0, W, H, 18);
+    ctx.fill();
+
+    // Blue border
+    ctx.strokeStyle = '#1e3a5f';
+    ctx.lineWidth = 2;
+    roundRect(ctx, 1, 1, W - 2, H - 2, 17);
+    ctx.stroke();
+
+    // Blue glow card shadow
+    ctx.save();
+    ctx.shadowColor = 'rgba(59,130,246,0.25)';
+    ctx.shadowBlur = 30;
+    ctx.fillStyle = 'transparent';
+    roundRect(ctx, 0, 0, W, H, 18);
+    ctx.fill();
+    ctx.restore();
+
+    // Icon
+    const iconX = 24, iconY = 24, iconSize = 112, iconRadius = 14;
+
+    // Icon glow
+    ctx.save();
+    ctx.shadowColor = 'rgba(59,130,246,0.6)';
+    ctx.shadowBlur = 20;
+    ctx.strokeStyle = '#3b82f6';
+    ctx.lineWidth = 2.5;
+    roundRect(ctx, iconX, iconY, iconSize, iconSize, iconRadius);
+    ctx.stroke();
+    ctx.restore();
+
+    // Icon image clipped
+    ctx.save();
+    roundRect(ctx, iconX, iconY, iconSize, iconSize, iconRadius);
+    ctx.clip();
+    ctx.drawImage(loadedImage, iconX, iconY, iconSize, iconSize);
+    ctx.restore();
+
+    // Text
+    const textX = iconX + iconSize + 22;
+    const nameY = 58;
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 28px Segoe UI, system-ui, sans-serif';
+    ctx.fillText(modNameInput.value.trim(), textX, nameY);
+
+    ctx.fillStyle = '#60a5fa';
+    ctx.font = '500 18px Segoe UI, system-ui, sans-serif';
+    ctx.fillText(modVersionInput.value.trim(), textX, nameY + 34);
+
+    ctx.fillStyle = '#6b7280';
+    ctx.font = '16px Segoe UI, system-ui, sans-serif';
+    ctx.fillText('Mohannd', textX, nameY + 60);
+
+    // Download
+    const link = document.createElement('a');
+    link.download = 'mod-card.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  });
+
+  function roundRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
+  }
+</script>
+</body>
+</html>
